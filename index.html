@@ -3,421 +3,648 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Culex OS • Annisa's Workspace</title>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <title>Zahravius | The Ultimate Oncology Hub</title>
+    
+    <!-- Premium Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Safe Particle JS -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
     <style>
         /* =========================================
-           CULEX OS - PREMIUM ELEGANT BLUE EDITION
+           GLOBAL VARIABLES & LUXURY THEME
            ========================================= */
         :root {
-            --bg-base: #e0eafc;
-            --blue-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            --accent-blue: #3a7bd5;
-            --light-blue: #89f7fe;
-            --glass-panel: rgba(255, 255, 255, 0.55);
-            --glass-border: rgba(255, 255, 255, 0.7);
-            --text-dark: #101820;
-            --text-muted: #5b7083;
-            --bubble-ai: rgba(255, 255, 255, 0.9);
+            --midnight-navy: #151A2C;
+            --rose-gold: #DDA7A5;
+            --magenta-glow: #C95C7A;
+            --danger: #ff4757;
+            --safe: #2ed573;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --shadow-float: 0 20px 50px rgba(201, 92, 122, 0.15);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body { 
-            background: linear-gradient(to bottom right, #e0eafc, #cfdef3); 
-            height: 100vh; 
-            display: flex; justify-content: center; align-items: center; 
-            overflow: hidden; 
-            position: relative;
+        body {
+            font-family: 'Inter', sans-serif; color: var(--midnight-navy);
+            background: linear-gradient(135deg, #FDF4F6, #FCEEF2, #F8D8E3, #FDF4F6);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* Ambient Animated Background */
-        .ambient-bg { position: absolute; width: 100vw; height: 100vh; top: 0; left: 0; z-index: 0; overflow: hidden; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; animation: floatOrb 25s infinite alternate ease-in-out; }
-        .orb-1 { width: 450px; height: 450px; background: #3a7bd5; top: -15%; left: -10%; }
-        .orb-2 { width: 550px; height: 550px; background: #89f7fe; bottom: -20%; right: -15%; animation-delay: -7s; }
-        .orb-3 { width: 350px; height: 350px; background: #1e3c72; top: 45%; left: 35%; animation-delay: -12s; opacity: 0.3; }
+        @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+        #particles-js { position: fixed; width: 100vw; height: 100vh; z-index: -1; top: 0; left: 0; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(120px, 180px) scale(1.15); }
-        }
+        /* HEADER */
+        header { position: fixed; top: 0; width: 100%; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.5); }
+        .logo { font-size: 2.2rem; font-weight: 700; letter-spacing: 1px; }
+        .logo .zahra { color: var(--midnight-navy); } 
+        .logo .vius { color: var(--magenta-glow); font-style: italic; }
 
-        /* Splash Screen */
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(234, 242, 253, 0.95); backdrop-filter: blur(25px);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
-        }
-        .splash-logo {
-            font-size: 55px; font-weight: 800; color: transparent;
-            background: var(--blue-gradient); -webkit-background-clip: text;
-            animation: pulseGlow 2.5s infinite alternate; margin-bottom: 15px; letter-spacing: -1px;
-        }
-        .splash-text { font-size: 13px; color: var(--accent-blue); letter-spacing: 3px; text-transform: uppercase; font-weight: 600; }
-        @keyframes pulseGlow {
-            0% { filter: drop-shadow(0 0 15px rgba(58, 123, 213, 0.2)); transform: scale(0.98); }
-            100% { filter: drop-shadow(0 0 35px rgba(58, 123, 213, 0.5)); transform: scale(1.02); }
-        }
+        .btn-premium { background: linear-gradient(135deg, var(--midnight-navy), #2C3554); color: white; border: none; padding: 15px 35px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: 0.4s; display: inline-flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 10px 20px rgba(11,19,43,0.2); }
+        .btn-premium:hover { background: linear-gradient(135deg, var(--magenta-glow), var(--rose-gold)); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(201,92,122,0.4); }
 
-        /* Main OS Container */
-        .app-container {
-            width: 100%; max-width: 950px; height: 92vh; 
-            background: var(--glass-panel); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); 
-            border: 1px solid var(--glass-border); border-radius: 30px; 
-            box-shadow: 0 35px 70px rgba(30, 60, 114, 0.1), inset 0 0 0 1px rgba(255,255,255,0.7); 
-            display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 10;
-            transform: translateY(25px); opacity: 0; animation: appEnter 1.2s 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes appEnter { to { transform: translateY(0); opacity: 1; } }
+        /* ANIMATION UTILITY */
+        .reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* Window Header */
-        .header { 
-            padding: 22px 35px; background: rgba(255,255,255,0.4); border-bottom: 1px solid rgba(255,255,255,0.6); 
-            display: flex; justify-content: space-between; align-items: center; 
-        }
-        .header-profile { display: flex; align-items: center; gap: 18px; }
-        .avatar-culex { 
-            width: 50px; height: 50px; border-radius: 50%; 
-            background: var(--blue-gradient);
-            display: flex; justify-content: center; align-items: center; color: white; font-weight: 800; font-size: 24px; 
-            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
-        }
-        .header-info h1 { font-size: 19px; font-weight: 700; color: var(--text-dark); letter-spacing: -0.3px; }
-        .header-info p { font-size: 13.5px; color: var(--accent-blue); font-weight: 500; }
-        .btn-clear { 
-            background: rgba(255,255,255,0.6); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.9); 
-            padding: 10px 20px; border-radius: 24px; font-size: 12.5px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; 
-        }
-        .btn-clear:hover { background: var(--blue-gradient); color: white; border-color: transparent; box-shadow: 0 5px 20px rgba(58, 123, 213, 0.3); }
-
-        /* Chat Area */
-        .chat-area { flex: 1; padding: 35px; overflow-y: auto; display: flex; flex-direction: column; gap: 22px; scroll-behavior: smooth; }
-        .chat-area::-webkit-scrollbar { width: 8px; }
-        .chat-area::-webkit-scrollbar-thumb { background: rgba(30, 60, 114, 0.15); border-radius: 10px; }
-
-        .msg-row { display: flex; width: 100%; animation: slideUpBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; }
-        .msg-row.user { justify-content: flex-end; }
-        .msg-row.ai { justify-content: flex-start; }
+        /* CONTAINERS */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 100px 5%; }
+        .hero-manifesto { font-size: 3.5rem; max-width: 900px; line-height: 1.3; font-style: italic; margin-bottom: 40px; text-shadow: 0 5px 15px rgba(255,255,255,0.8); }
         
-        .bubble { max-width: 75%; padding: 16px 22px; font-size: 15.5px; line-height: 1.6; word-wrap: break-word; position: relative; }
-        .bubble-user { 
-            background: var(--blue-gradient); color: white; 
-            border-radius: 24px 24px 6px 24px; box-shadow: 0 12px 25px rgba(30, 60, 114, 0.25); font-weight: 500;
-        }
-        .bubble-ai { 
-            background: var(--bubble-ai); color: var(--text-dark); backdrop-filter: blur(12px);
-            border-radius: 24px 24px 24px 6px; box-shadow: 0 12px 35px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(255,255,255,0.9); 
-        }
-        .bubble b { font-weight: 700; color: var(--accent-blue); }
-        
-        /* Upload Card */
-        .upload-card { 
-            background: rgba(255,255,255,0.95); border-radius: 22px; padding: 26px; margin-top: 18px; 
-            box-shadow: 0 20px 40px rgba(30, 60, 114, 0.08), inset 0 0 0 1px rgba(255,255,255,1); width: 100%; min-width: 340px; 
-        }
-        .upload-card h3 { font-size: 16px; margin-bottom: 18px; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
-        .upload-group { margin-bottom: 18px; background: #f0f4f8; padding: 14px; border-radius: 14px; border: 1px dashed #b9c6d2; }
-        .upload-group label { font-size: 12px; color: var(--accent-blue); font-weight: 700; display: block; margin-bottom: 8px; letter-spacing: 0.5px; }
-        .upload-group input[type="file"] { font-size: 13px; width: 100%; color: var(--text-muted); }
-        .btn-process { 
-            background: var(--blue-gradient); color: white; border: none; width: 100%; padding: 15px; 
-            border-radius: 16px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s ease; 
-            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
-        }
-        .btn-process:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(30, 60, 114, 0.4); }
+        .glass-container { max-width: 1100px; margin: 80px auto; padding: 50px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.8); border-radius: 30px; box-shadow: var(--shadow-float); }
+        .section-title { font-size: 2.8rem; text-align: center; margin-bottom: 15px; color: var(--midnight-navy); }
+        .section-desc { text-align: center; color: #555; font-size: 1.1rem; margin-bottom: 40px; max-width: 700px; margin-inline: auto; }
 
-        /* Typing Indicator */
-        .typing-indicator { display: flex; gap: 6px; padding: 14px 20px; background: rgba(255,255,255,0.8); border-radius: 22px; width: fit-content; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
-        .dot { width: 9px; height: 9px; background: var(--accent-blue); border-radius: 50%; animation: bounceDot 1.4s infinite ease-in-out both; }
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
+        /* FORMS */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem; }
+        .input-group input, .input-group select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #ddd; outline: none; font-family: 'Inter'; font-size: 1rem; transition: 0.3s; }
+        .input-group input:focus, .input-group select:focus { border-color: var(--magenta-glow); box-shadow: 0 0 10px rgba(201,92,122,0.1); }
 
-        /* Input Area */
-        .input-area { 
-            padding: 22px 35px; background: rgba(255,255,255,0.5); border-top: 1px solid rgba(255,255,255,0.7); 
-            display: flex; gap: 18px; align-items: center; 
-        }
+        /* AI ROOM & CHAT */
+        .ai-room { display: flex; gap: 30px; background: rgba(255,255,255,0.9); padding: 30px; border-radius: 25px; border: 2px solid white; align-items: flex-start; }
+        .avatar-box { width: 180px; height: 180px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 5px solid white; box-shadow: 0 10px 20px rgba(201,92,122,0.2); background: var(--rose-gold); }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
         
-        .input-box { 
-            flex: 1; background: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,1); padding: 18px 26px; 
-            border-radius: 35px; font-size: 15.5px; outline: none; transition: all 0.3s; color: var(--text-dark);
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02), 0 8px 20px rgba(30, 60, 114, 0.04);
-        }
-        .input-box:focus { background: white; box-shadow: 0 0 0 4px rgba(58, 123, 213, 0.15), 0 8px 20px rgba(30, 60, 114, 0.08); }
-        .input-box::placeholder { color: #95a5a6; font-weight: 500; }
-        
-        .btn-send { 
-            background: var(--blue-gradient); width: 52px; height: 52px; border-radius: 50%; border: none; 
-            cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
-        }
-        .btn-send svg { width: 22px; height: 22px; fill: white; transform: translateX(2px); }
-        .btn-send:hover { transform: scale(1.08) rotate(-10deg); box-shadow: 0 15px 30px rgba(30, 60, 114, 0.45); }
+        .ai-bubble { background: white; padding: 20px; border-radius: 0 20px 20px 20px; font-size: 1.15rem; font-style: italic; border-left: 5px solid var(--magenta-glow); margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .chip-btn { padding: 12px 20px; border: 2px solid var(--magenta-glow); background: white; color: var(--magenta-glow); border-radius: 25px; cursor: pointer; font-weight: 600; font-size: 0.95rem; margin: 5px 5px 5px 0; transition: 0.3s; }
+        .chip-btn:hover { background: var(--magenta-glow); color: white; }
 
-        /* Animations */
-        @keyframes slideUpBounce {
-            0% { opacity: 0; transform: translateY(35px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes bounceDot {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-            40% { transform: scale(1); opacity: 1; }
-        }
+        /* DASHBOARD (DIAGNOSIS) */
+        .diag-card { background: white; padding: 25px; border-radius: 20px; display: flex; gap: 20px; align-items: center; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); animation: fadeUp 0.6s ease; }
+        .diag-icon { width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border-radius: 15px; flex-shrink: 0; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .hidden { display: none !important; }
+        .alert-red { border: 2px solid var(--danger); animation: pulseDanger 2s infinite; }
+        @keyframes pulseDanger { 0% { box-shadow: 0 0 0 0 rgba(255,71,87,0.3); } 70% { box-shadow: 0 0 0 15px rgba(255,71,87,0); } 100% { box-shadow: 0 0 0 0 rgba(255,71,87,0); } }
+
+        /* =========================================
+           PATHOGENESIS GAME SIMULATOR
+           ========================================= */
+        .game-wrapper { background: #111; color: white; border-radius: 30px; padding: 40px; margin-top: 50px; box-shadow: inset 0 0 40px rgba(0,0,0,0.8); display: none; }
+        .game-stage { height: 400px; background: radial-gradient(circle, #2a2a35 0%, #050505 100%); border-radius: 20px; position: relative; overflow: hidden; border: 2px solid #333; margin-bottom: 30px; }
+        
+        .g-avatar { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); width: 100px; height: 250px; transition: width 0.8s ease; display: flex; justify-content: center; align-items: center; }
+        .g-avatar img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .g-duct { position: absolute; left: 35%; top: 20%; width: 40%; height: 60%; border: 3px dashed #666; border-radius: 40px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 20px; z-index: 2; transition: border-color 0.5s; }
+        .g-basalis { position: absolute; bottom: 0; left: 0; width: 100%; height: 10px; background: rgba(255,255,255,0.3); transition: 0.5s; }
+        
+        .g-cell { width: 45px; height: 45px; background: #3498db; border-radius: 50%; box-shadow: 0 0 15px #3498db; transition: all 0.8s ease; position: relative; }
+        .g-cell.cancer { background: #e74c3c; box-shadow: 0 0 20px #e74c3c; border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; animation: morph 2s infinite; }
+        @keyframes morph { 0%, 100% {border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;} 50% {border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;} }
+        
+        .g-brca { position: absolute; top: -35px; font-size: 2rem; color: #f1c40f; display: none; text-shadow: 0 0 15px #f1c40f; animation: float 2s infinite; }
+        @keyframes float { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
+        
+        /* Smooth GPU-accelerated Transforms for Game Entities */
+        .g-tcell { position: absolute; right: 10px; top: 40%; width: 55px; height: 55px; background: #2ecc71; border-radius: 50%; display: none; transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1), background 1s, filter 1s, opacity 1s; box-shadow: 0 0 15px #2ecc71; z-index: 10; transform: translateX(0); }
+        .g-tcell.hypnotized { background: #9b59b6; box-shadow: 0 0 15px #9b59b6; filter: blur(2px); opacity: 0.7; transform: translateX(-180px); }
+        
+        .g-lymph { position: absolute; bottom: -50px; right: -50px; width: 150px; height: 150px; background: rgba(46,204,113,0.1); border-radius: 50%; border: 2px dashed #2ecc71; display: none; }
+        .g-hypoxia { position: absolute; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.85) 0%, transparent 80%); display: none; z-index: 5; }
+
+        .game-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .btn-game { background: #222; color: white; border: 1px solid #444; padding: 12px 20px; border-radius: 12px; cursor: pointer; transition: 0.3s; font-weight: 600; }
+        .btn-game:hover:not(:disabled) { background: var(--magenta-glow); border-color: var(--magenta-glow); }
+        .btn-game:disabled { opacity: 0.4; cursor: not-allowed; }
+        
+        .game-log { background: rgba(0,0,0,0.6); border-left: 4px solid var(--magenta-glow); padding: 20px; border-radius: 10px; margin-top: 20px; font-style: italic; min-height: 80px; }
+
+        /* =========================================
+           PATHWAY (KURATIF & REHAB & IHK)
+           ========================================= */
+        .pathway-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 25px; }
+        .pathway-card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .pathway-card h4 { color: var(--midnight-navy); margin-bottom: 10px; font-size: 1.2rem; }
+
+        .ihk-stage { background: #E8F0F2; height: 250px; border-radius: 20px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-top: 20px; }
+        .ihk-cell { width: 120px; height: 120px; background: #C95C7A; border-radius: 50%; position: relative; box-shadow: 0 10px 25px rgba(201,92,122,0.4); transition: 0.3s; }
+        .rec-er { position: absolute; width: 20px; height: 20px; background: #f1c40f; border-radius: 50%; box-shadow: 0 0 10px #f1c40f; display: none; }
+        .rec-her2 { position: absolute; width: 12px; height: 35px; background: #3498db; box-shadow: 0 0 10px #3498db; display: none; }
+        
+        .rom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .rom-card { background: white; padding: 15px; border-radius: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .rom-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; background: #eee; }
+
+        /* =========================================
+           FORUM (PINK RIBBON)
+           ========================================= */
+        .forum-wrap { max-width: 700px; margin: 40px auto; background: white; border-radius: 25px; overflow: hidden; box-shadow: var(--shadow-float); }
+        .forum-head { background: linear-gradient(135deg, var(--midnight-navy), #2C3554); padding: 25px; color: white; text-align: center; }
+        .forum-body { padding: 30px; background: #fdfdfd; max-height: 500px; overflow-y: auto; }
+        .post { background: white; padding: 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .post-head { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .avatar-sm { width: 45px; height: 45px; background: var(--magenta-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+        
+        .reply-thread { margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .reply-bubble { background: #f0f4f8; padding: 15px; border-radius: 15px; font-size: 0.95rem; }
+        .reply-ai { background: rgba(201,92,122,0.1); border-left: 4px solid var(--magenta-glow); }
+        
+        .forum-input { display: flex; padding: 20px; background: white; border-top: 1px solid #eee; gap: 10px; }
+        .forum-input input { flex: 1; padding: 15px 20px; border-radius: 25px; border: 1px solid #ddd; outline: none; font-family: 'Inter'; }
+        .btn-send { background: var(--magenta-glow); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+        .btn-send:hover { transform: scale(1.1); }
+
+        footer { text-align: center; padding: 40px 20px; background: var(--midnight-navy); color: rgba(255,255,255,0.6); margin-top: 80px; }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Background -->
-    <div class="ambient-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+    <!-- SAFE PARTICLES -->
+    <div id="particles-js"></div>
 
-    <!-- Boot Splash Screen -->
-    <div id="splash-screen">
-        <div class="splash-logo">Culex AI</div>
-        <div class="splash-text">Preparing Workspace...</div>
-    </div>
+    <header>
+        <div class="logo"><span class="zahra">Zahra</span><span class="vius">vius</span></div>
+        <button class="btn-premium" style="padding: 10px 20px; font-size: 0.9rem;" onclick="document.getElementById('baseline-section').scrollIntoView();">Mulai</button>
+    </header>
 
-    <!-- Main Application -->
-    <div class="app-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-profile">
-                <div class="avatar-culex">C</div>
-                <div class="header-info">
-                    <h1>Culex</h1>
-                    <p id="status-text">Analisis presisi untuk Annisa ✨</p>
+    <!-- HERO SECTION -->
+    <section class="hero reveal">
+        <h1 class="hero-manifesto">"Perempuan adalah laksana permata yang cahayanya menenangkan semesta. Kami hadir untuk memastikan tidak ada lagi yang berjuang sendirian."</h1>
+    </section>
+
+    <!-- BASELINE SECTION -->
+    <section class="glass-container reveal" id="baseline-section">
+        <h2 class="section-title">Kenali Permatamu</h2>
+        <p class="section-desc">Lengkapi metrik klinis ini (termasuk riwayat laktasi dan genetik) agar AI-Zahrawi dapat menghitung profil risikomu secara presisi sesuai Evidence-Based Medicine.</p>
+        
+        <div class="form-grid">
+            <div class="input-group"><label>Usia (Tahun)</label><input type="number" id="f_usia" placeholder="Misal: 35" required></div>
+            <div class="input-group"><label>Usia Menarche (Haid Pertama)</label><select id="f_menarche"><option value="normal">> 12 Tahun</option><option value="dini">< 12 Tahun (Dini)</option></select></div>
+            <div class="input-group"><label>Status Menopause</label><select id="f_meno"><option value="belum">Belum Menopause</option><option value="sudah">Sudah (> 50 Tahun)</option></select></div>
+            <div class="input-group"><label>Tinggi Badan (cm)</label><input type="number" id="f_tb" placeholder="Misal: 160" required></div>
+            <div class="input-group"><label>Berat Badan (kg)</label><input type="number" id="f_bb" placeholder="Misal: 55" required></div>
+            <div class="input-group"><label>Riwayat Mutasi Genetik</label><select id="f_gen"><option value="tidak">Tidak Ada Riwayat Keluarga</option><option value="ada">Ada (Ibu/Saudara Kanker)</option></select></div>
+            <div class="input-group"><label>Riwayat Laktasi</label><select id="f_lak"><option value="pernah">Pernah Menyusui Eksklusif</option><option value="belum">Tidak / Belum Pernah</option></select></div>
+        </div>
+        <div style="text-align: center;">
+            <button class="btn-premium" onclick="processBaseline()">Mulai Skrining Klinis <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </section>
+
+    <!-- ACTION SECTION (VIDEO & AI TRIAGE) -->
+    <section class="glass-container reveal" id="sadari-section" style="display: none;">
+        <h2 class="section-title">Observasi & Skrining</h2>
+        
+        <div style="width: 100%; max-width: 800px; margin: 0 auto 40px; border-radius: 20px; overflow: hidden; border: 4px solid white; box-shadow: var(--shadow-float);">
+            <video controls poster="Thumbnail_Video.jpg" style="width: 100%; display: block;">
+                <source src="video_sadari.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="ai-room">
+            <div class="avatar-box">
+                <img src="Zahra_Serius.jpg" id="zahraImg" alt="Zahra Avatar" onerror="this.src='https://via.placeholder.com/200x200?text=Zahra_Serius';">
+            </div>
+            <div style="flex: 1;">
+                <div class="ai-bubble" id="zahraChat">
+                    "Data lengkapmu sudah kurekam! Sekarang, setelah kamu melakukan teknik SADARI, apakah kamu menemukan adanya <strong>benjolan, kemerahan, atau perubahan bentuk</strong> pada payudara?"
+                </div>
+                <div id="chipBox" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <!-- Q1 -->
+                    <button class="chip-btn" onclick="q2()"><i class="fa-solid fa-magnifying-glass"></i> Ya, ada benjolan/perubahan</button>
+                    <button class="chip-btn" onclick="showDiagnosis('R01')" style="border-color: var(--safe); color: var(--safe);"><i class="fa-solid fa-check"></i> Normal, tidak ada keluhan</button>
                 </div>
             </div>
-            <button class="btn-clear" onclick="hapusSemuaData()">Clear Memory</button>
         </div>
 
-        <!-- Chat Area -->
-        <div class="chat-area" id="chat-box"></div>
+        <!-- DASHBOARD DIAGNOSIS -->
+        <div id="diagnostic-dashboard" style="display: none; margin-top: 40px;"></div>
 
-        <!-- Input Area -->
-        <div class="input-area">
-            <input type="text" id="chat-input" class="input-box" placeholder="Ketik pesan atau panggil 'proker'..." autocomplete="off">
-            <button class="btn-send" onclick="kirimPesan()">
-                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
-            </button>
+        <!-- =========================================
+             PATHOGENESIS GAME SIMULATOR
+             ========================================= -->
+        <div class="game-wrapper" id="game-simulator">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h3 style="font-size: 2.2rem; color: var(--rose-gold); margin-bottom: 10px; font-family: 'Playfair Display';">Pathogenesis Simulator</h3>
+                <p>Simulasi interaktif: Bagaimana gaya hidup dan genetik memicu kanker payudara.</p>
+            </div>
+            
+            <div class="game-stage">
+                <!-- Avatar -->
+                <div class="g-avatar" id="game-avatar">
+                    <img src="Avatar_Normal.png" alt="Human" onerror="this.src='https://via.placeholder.com/100x250?text=Wanita';">
+                </div>
+                
+                <!-- Kelenjar Payudara -->
+                <div class="g-duct" id="game-duct">
+                    <div class="g-basalis" id="g-basalis"></div>
+                    <div class="g-hypoxia" id="g-hypoxia"></div>
+                    <i class="fa-solid fa-shield-halved g-brca" id="g-brca"></i>
+                    
+                    <div class="g-cell" style="display:block;"><img src="Sel_Normal.png" style="width:100%; border-radius:50%;" onerror="this.style.display='none';"></div>
+                    <div class="g-cell" style="display:block;"></div>
+                    <div class="g-cell" style="display:block;"></div>
+                    <div class="g-cell" style="display:block;"></div>
+                </div>
+
+                <!-- KGB Target -->
+                <div class="g-lymph" id="g-lymph">
+                    <span style="position:absolute; bottom:20px; left:25px; font-size:0.8rem; color:#2ecc71;">KGB Axilla</span>
+                </div>
+
+                <!-- Sel Imun -->
+                <div class="g-tcell" id="g-tcell">
+                    <img src="Sel_Imun.png" style="width:100%; border-radius:50%;" onerror="this.style.display='none';">
+                    <span style="position:absolute; top:-20px; left:-5px; font-size:0.7rem; color:white; background:#e74c3c; padding:2px 5px; border-radius:10px;">CD8+</span>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button class="btn-game" id="btn-g1" onclick="gameStep(1)">1. Efek Obesitas (Aromatase)</button>
+                <button class="btn-game" id="btn-g2" onclick="gameStep(2)" disabled>2. Kerusakan Gen (BRCA)</button>
+                <button class="btn-game" id="btn-g3" onclick="gameStep(3)" disabled>3. Hipoksia Sel</button>
+                <button class="btn-game" id="btn-g4" onclick="gameStep(4)" disabled>4. Immune Evasion (TGF-β)</button>
+                <button class="btn-game" id="btn-g5" onclick="gameStep(5)" disabled>5. Invasi Membrana Basalis</button>
+            </div>
+
+            <div class="game-log" id="game-log">
+                Selamat datang di Simulator Patogenesis. Klik <strong>Langkah 1</strong> untuk memulai simulasi.
+            </div>
         </div>
-    </div>
 
+        <!-- =========================================
+             PATHWAY NAVIGATION BUTTONS
+             ========================================= -->
+        <div id="pathway-options" style="display: none; margin-top: 60px; text-align: center;">
+            <h3 style="font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 25px;">Navigasi Perjalanan Medis</h3>
+            <button class="btn-premium" onclick="openCurative()" style="margin-right: 15px;">Fase Terapi (Kuratif)</button>
+            <button class="btn-premium" onclick="openRehab()" style="background: transparent; border: 2px solid var(--midnight-navy); color: var(--midnight-navy);">Fase Pemulihan (Rehab)</button>
+        </div>
+
+        <!-- FASE KURATIF & IHK -->
+        <div id="curative-path" style="display: none; margin-top: 60px; animation: fadeUp 0.6s ease;">
+            <h2 class="section-title">Fase Kuratif</h2>
+            <div class="pathway-grid">
+                <div class="pathway-card">
+                    <h4><i class="fa-solid fa-syringe" style="color:var(--magenta-glow);"></i> Core Needle Biopsy (CNB)</h4>
+                    <p>Standar emas diagnostik. Eksisi tidak disarankan karena berisiko menyebarkan sel kanker (tumor seeding) dan merusak margin bebas jaringan.</p>
+                </div>
+                <div class="pathway-card">
+                    <h4><i class="fa-solid fa-pills" style="color:var(--magenta-glow);"></i> Sistemik vs Lokal</h4>
+                    <p>Mastektomi adalah terapi lokal. Sedangkan Kemoterapi & Terapi Hormonal bersifat sistemik untuk menyapu mikrometastasis di seluruh tubuh.</p>
+                </div>
+            </div>
+
+            <!-- IHK SIMULATOR -->
+            <div class="glass-container" style="padding: 40px; margin-top: 30px; box-shadow: none; border: 1px solid #ddd;">
+                <h3 style="font-size: 1.8rem; margin-bottom: 15px; font-family: 'Playfair Display';">IHK Decoder (Imunohistokimia)</h3>
+                <p style="color: #666; margin-bottom: 20px;">Nyalakan reseptor sesuai hasil patologimu untuk melihat strategi terapi onkologi.</p>
+                
+                <div class="ihk-stage">
+                    <div class="ihk-cell" id="ihk-cell"></div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; justify-content: center; margin-top: 25px;">
+                    <button class="chip-btn" id="btn-er" onclick="toggleIHK('er')">ER Positif (+)</button>
+                    <button class="chip-btn" id="btn-her2" onclick="toggleIHK('her2')">HER2 Positif (+)</button>
+                </div>
+                
+                <div id="ihk-output" style="margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.03); border-radius: 15px; font-style: italic; border-left: 4px solid var(--rose-gold);">
+                    Status saat ini: <strong>Triple Negatif (TNBC)</strong>. Kanker tidak memiliki reseptor (kosong). Terapi utama akan berfokus pada Kemoterapi Sistemik konvensional.
+                </div>
+            </div>
+        </div>
+
+        <!-- FASE REHAB -->
+        <div id="rehab-path" style="display: none; margin-top: 60px; animation: fadeUp 0.6s ease;">
+            <h2 class="section-title">Fase Rehabilitatif</h2>
+            
+            <div class="pathway-card alert-red" style="margin-bottom: 30px;">
+                <h4 style="color: var(--danger); font-size: 1.6rem; margin-bottom: 10px;"><i class="fa-solid fa-shield-heart"></i> Lymphedema Guard!</h4>
+                <p>Pasca mastektomi dan pengangkatan kelenjar getah bening, lengan sisi operasi <strong>DILARANG KERAS</strong> untuk:</p>
+                <ul style="margin: 10px 0 0 20px; font-weight: 600;">
+                    <li>Diukur tekanan darah (Tensi).</li>
+                    <li>Diambil darah atau disuntik.</li>
+                    <li>Mengangkat beban berat seumur hidup!</li>
+                </ul>
+            </div>
+
+            <h4 style="font-size: 1.8rem; font-family: 'Playfair Display';">Senam Range of Motion (ROM)</h4>
+            <div class="rom-grid">
+                <div class="rom-card">
+                    <img src="rom_1.jpg" alt="Wall Climbing" onerror="this.src='https://via.placeholder.com/300x200?text=Wall+Climbing';">
+                    <h5>Wall Climbing (Merambat Dinding)</h5>
+                    <p style="font-size: 0.9rem; color: #555; margin-top: 5px;">Mencegah kekakuan sendi bahu (*frozen shoulder*).</p>
+                </div>
+                <div class="rom-card">
+                    <img src="rom_2.jpg" alt="Arm Swings" onerror="this.src='https://via.placeholder.com/300x200?text=Arm+Swings';">
+                    <h5>Arm Swings (Ayun Lengan)</h5>
+                    <p style="font-size: 0.9rem; color: #555; margin-top: 5px;">Bungkukkan badan, ayun lengan perlahan rileks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BAB 7: FORUM PINK RIBBON -->
+    <section class="reveal" id="forum-section" style="display: none; padding-bottom: 80px;">
+        <div class="forum-wrap">
+            <div class="forum-head">
+                <h3 style="font-size: 2rem; font-family: 'Playfair Display';"><i class="fa-solid fa-users"></i> Pink Ribbon Society</h3>
+                <p style="opacity: 0.9; margin-top: 5px;">Ruang interaktif aman dengan enkripsi visual wajah otomatis.</p>
+            </div>
+            
+            <div class="forum-body" id="forum-feed">
+                <!-- Post Asli -->
+                <div class="post">
+                    <div class="post-head">
+                        <div class="avatar-sm">PS</div>
+                        <div>
+                            <h4 style="font-family: 'Inter';">@PejuangSenyum</h4>
+                            <span style="font-size: 0.8rem; color: #888;">Anonim & Terlindungi</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 1.05rem; font-style: italic;">"Halo ibu-ibu hebat! Hari ini kemo kedua. Naik ojol biar kena angin jalanan. Doakan mualnya nggak parah ya! 💖"</p>
+                    
+                    <div style="position: relative; border-radius: 15px; overflow: hidden; margin: 15px 0;">
+                        <img src="Foto_Forum_1.jpg" style="width: 100%; display: block;" alt="Gojek Photo" onerror="this.src='https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800';">
+                        <div style="position: absolute; top: 10%; left: 15%; width: 40%; height: 45%; backdrop-filter: blur(15px); border-radius: 50%; background: rgba(255,255,255,0.2);"></div>
+                    </div>
+
+                    <div class="reply-thread">
+                        <div class="reply-bubble"><strong>@BundaTangguh:</strong> Semangat Mba! Kemo kedua biasanya sudah adaptasi.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="forum-input">
+                <input type="text" id="forumInput" placeholder="Ketik sapaan atau kata 'semangat' di sini...">
+                <button class="btn-send" onclick="sendMsg()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SIGNATURE -->
+    <footer>
+        <p style="margin-bottom: 15px;">Platform ini adalah inovasi edukasi digital, bukan pengganti diagnosis medis.</p>
+        <p style="color: var(--rose-gold); font-weight: 600; letter-spacing: 0.5px;">Oleh Naufa Nufail dibuat terinspirasi oleh Skenario BBDM Fakultas Kedokteran Universitas Diponegoro <br> All rights reserved © 2026</p>
+    </footer>
+
+    <!-- =========================================
+         SAFE JAVASCRIPT LOGIC
+         ========================================= -->
     <script>
-        // ===================================================================
-        // KUNCI API DAN NAMA MODEL SUDAH DIPERBAIKI
-        // ===================================================================
-        const API_KEY = "AQ.Ab8RN6KaZeesx5q17ohEC_fqdMo7MZOLcws0xpoh9qjLDmH0LA"; 
-        
-        let riwayatChat = [];
-        let dataMentah = ""; 
-
-        // BOOT SEQUENCE & INITIALIZATION
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('splash-screen').style.display = 'none';
-                }, 1000);
-            }, 2200); 
-
-            if (localStorage.getItem('dataCulex_v3') !== null) {
-                dataMentah = localStorage.getItem('dataCulex_v3');
-            }
-            muatRiwayatChat();
-        };
-
-        // LOGIC MAGIC TRIGGER
-        async function kirimPesan() {
-            const inputField = document.getElementById('chat-input');
-            const pesanUser = inputField.value;
-            if (!pesanUser) return;
-
-            tambahKeChat('user', pesanUser);
-            inputField.value = "";
-            
-            // MAGIC TRIGGER: Deteksi kata terkait proker / counsel sibling
-            const pesanLower = pesanUser.toLowerCase();
-            if ((pesanLower.includes("counsel sibling") || pesanLower.includes("proker")) && dataMentah === "") {
-                tambahKeChat('ai', `<b>Proker Mode: ON 🚀</b><br>Siap bantu kelola ratusan datanya, Nis. Silakan masukkan data <b>2025</b> dan <b>2026</b> di bawah ini. Culex akan pastikan pencocokannya akurat dan terstruktur.`, true);
-                return;
-            }
-
-            const typingID = "typing-" + Date.now();
-            munculkanTyping(typingID);
-
-            // SYSTEM PROMPT
-            const systemPrompt = `Nama kamu adalah Culex. Kamu adalah AI asisten eksklusif buatan Naufa yang dirancang khusus untuk Annisa.
-            Sikapmu: Profesional, cerdas, solutif, namun tetap bersahabat dan akrab. Panggil dia "Annisa" atau "Nis".
-            Konteks: Annisa sedang mengurus pencocokan data peserta angkatan 2025 dan 2026. Dia butuh hasil yang sangat presisi agar pesertanya cocok dan nyaman satu sama lain.
-            Tugasmu: Lakukan pencocokan profil berdasarkan logika yang kuat. Jadikan kesamaan daerah asal (sedaerah) sebagai pertimbangan yang sangat kuat. Selain itu, pertimbangkan juga kesamaan hobi dan kecocokan kepribadian (misal: yang ekstrovert bisa membimbing yang introvert). Saat memberikan rekomendasi, jelaskan alasan objektifnya dengan jelas (misal: "Peserta A dan B sangat cocok karena berasal dari daerah yang sama dan sama-sama aktif berorganisasi...").
-            Gunakan hanya istilah "2025" dan "2026". Dilarang menggunakan istilah "Kakak Asuh" atau "Adek Asuh".
-            Data memori tersimpan: \n${dataMentah}`;
-
+        // 1. SAFE PARTICLES INITIALIZATION
+        document.addEventListener('DOMContentLoaded', function() {
             try {
-                // MODEL DIPERBARUI KE gemini-flash-latest
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${API_KEY}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ parts: [
-                            { text: systemPrompt },
-                            { text: `Pesan Annisa: ${pesanUser}` }
-                        ] }]
-                    })
-                });
-
-                const hasil = await response.json();
-                hilangkanTyping(typingID);
-
-                if (hasil.error) {
-                    tambahKeChat('ai', "Maaf Nis, koneksi Culex ke server sedang bermasalah: " + hasil.error.message);
-                } else {
-                    let balasanAI = hasil.candidates[0].content.parts[0].text;
-                    balasanAI = balasanAI.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-                    tambahKeChat('ai', balasanAI);
+                if (typeof particlesJS !== 'undefined') {
+                    particlesJS("particles-js", {
+                        "particles": { "number": { "value": 40 }, "color": { "value": ["#DDA7A5", "#C95C7A"] }, "shape": { "type": "circle" }, "opacity": { "value": 0.5 }, "size": { "value": 4, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#DDA7A5", "opacity": 0.3 }, "move": { "enable": true, "speed": 1 } },
+                        "retina_detect": true
+                    });
                 }
-            } catch (error) {
-                hilangkanTyping(typingID);
-                tambahKeChat('ai', "Koneksi terputus Nis. Pastikan jaringan internet stabil, lalu kita coba lagi.");
-            }
-        }
-
-        // RENDER UI CHAT BUBBLES
-        function tambahKeChat(pengirim, teks, isUploadMenu = false) {
-            let konten = teks;
-            
-            if (isUploadMenu) {
-                konten += `
-                <div class="upload-card" id="card-upload-temp">
-                    <h3>📁 Sinkronisasi Data Proker</h3>
-                    <div class="upload-group">
-                        <label>Database 2025</label>
-                        <input type="file" id="file2025" accept=".csv, .xlsx, .xls">
-                    </div>
-                    <div class="upload-group">
-                        <label>Database 2026</label>
-                        <input type="file" id="file2026" accept=".csv, .xlsx, .xls">
-                    </div>
-                    <button class="btn-process" onclick="prosesDataExcel()">Eksekusi Analisis</button>
-                </div>`;
-            }
-
-            const msgObj = { role: pengirim, content: konten };
-            riwayatChat.push(msgObj);
-            
-            if (!isUploadMenu) {
-                localStorage.setItem('chatCulexOS_v3', JSON.stringify(riwayatChat));
-            }
-            renderSatuPesan(msgObj);
-        }
-
-        function renderSatuPesan(msg) {
-            const chatBox = document.getElementById('chat-box');
-            const row = document.createElement('div');
-            row.className = `msg-row ${msg.role === 'user' ? 'user' : 'ai'}`;
-            
-            const bubble = document.createElement('div');
-            bubble.className = `bubble ${msg.role === 'user' ? 'bubble-user' : 'bubble-ai'}`;
-            bubble.innerHTML = msg.content;
-            
-            row.appendChild(bubble);
-            chatBox.appendChild(row);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        // FUNGSI EKSEKUSI EXCEL
-        async function prosesDataExcel() {
-            const file1 = document.getElementById('file2025').files[0];
-            const file2 = document.getElementById('file2026').files[0];
-
-            if (!file1 || !file2) { alert("Nis, wajib masukkan kedua data 2025 dan 2026 untuk proses analisis."); return; }
-
-            const btn = document.querySelector('.btn-process');
-            btn.innerText = "Memproses kecocokan profil...";
-            btn.style.opacity = "0.8";
-
-            try {
-                const data1 = await bacaExcel(file1);
-                const data2 = await bacaExcel(file2);
-                dataMentah = `DATA 2025:\n${JSON.stringify(data1)}\n\nDATA 2026:\n${JSON.stringify(data2)}`;
-                localStorage.setItem('dataCulex_v3', dataMentah);
-                
-                const uploadCard = document.getElementById('card-upload-temp');
-                if(uploadCard) uploadCard.remove();
-                
-                tambahKeChat('ai', "<b>Sinkronisasi Selesai. 🚀</b><br>Ratusan profil dari 2025 dan 2026 sudah masuk memori. Culex siap melakukan pencocokan berdasarkan parameter terkuat seperti kesamaan daerah, minat, dan karakter. Mau mulai dari kriteria apa, Nis?");
-            } catch (error) {
-                alert("Maaf, file gagal dibaca. Pastikan formatnya Excel atau CSV.");
-                btn.innerText = "Eksekusi Analisis";
-                btn.style.opacity = "1";
-            }
-        }
-
-        function bacaExcel(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, {type: 'array'});
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    resolve(XLSX.utils.sheet_to_json(firstSheet));
-                };
-                reader.onerror = reject;
-                reader.readAsArrayBuffer(file);
-            });
-        }
-
-        // EFEK TYPING & UTILITIES
-        function munculkanTyping(id) {
-            const chatBox = document.getElementById('chat-box');
-            const row = document.createElement('div');
-            row.className = `msg-row ai`;
-            row.id = id;
-            row.innerHTML = `<div class="typing-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
-            chatBox.appendChild(row);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function hilangkanTyping(id) {
-            const el = document.getElementById(id);
-            if (el) el.remove();
-        }
-
-        function muatRiwayatChat() {
-            const chatTersimpan = localStorage.getItem('chatCulexOS_v3');
-            const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML = "";
-            
-            if (chatTersimpan) {
-                riwayatChat = JSON.parse(chatTersimpan);
-                riwayatChat.forEach(msg => renderSatuPesan(msg));
-            } else {
-                tambahKeChat('ai', "Halo Annisa, selamat datang di <b>Culex OS</b> ✨<br>Sistem siap menganalisis data atau membantumu mengurus tugas hari ini. Ketik instruksimu di bawah.");
-            }
-        }
-
-        function hapusSemuaData() {
-            if (confirm("Kamu yakin ingin membersihkan memori Culex dan memulai obrolan baru?")) {
-                localStorage.removeItem('dataCulex_v3');
-                localStorage.removeItem('chatCulexOS_v3');
-                location.reload(); 
-            }
-        }
-
-        document.getElementById("chat-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                kirimPesan();
-            }
+            } catch (e) { console.log("Particles fallback to gradient."); }
         });
+
+        // SCROLL REVEAL
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 50) reveals[i].classList.add("active");
+            }
+        }
+        window.addEventListener("scroll", reveal); reveal();
+
+        // 2. BASELINE PROCESSING
+        let userData = {};
+        function processBaseline() {
+            userData.usia = parseInt(document.getElementById('f_usia').value) || 0;
+            const tb = (parseFloat(document.getElementById('f_tb').value) || 0) / 100;
+            const bb = parseFloat(document.getElementById('f_bb').value) || 0;
+            
+            // Check Required
+            if(!userData.usia || !tb || !bb) { alert("Harap lengkapi Usia, Tinggi, dan Berat Badan untuk akurasi AI."); return; }
+            
+            // Laktasi Check (Additional Educations)
+            const laktasi = document.getElementById('f_lak').value;
+            userData.imt = (bb / (tb * tb)).toFixed(1);
+            userData.menyusui = (laktasi === 'pernah');
+            
+            document.getElementById('baseline-section').style.display = 'none';
+            const sadari = document.getElementById('sadari-section');
+            sadari.style.display = 'block';
+            setTimeout(() => { sadari.classList.add('active'); }, 100);
+            window.scrollTo({ top: sadari.offsetTop - 50, behavior: 'smooth' });
+        }
+
+        // 3. AI TRIAGE & RED FLAG DISCLAIMER
+        // Triage Q2
+        function q2() {
+            document.getElementById('zahraImg').src = "Zahra_Analisis.jpg";
+            document.getElementById('zahraChat').innerHTML = '"Zahra mengerti. Coba raba dengan ujung tiga jari memutar, apakah benjolannya terasa <strong>keras seperti batu</strong> dan <strong>sulit digeser (immobile)</strong> saat didorong?"';
+            document.getElementById('chipBox').innerHTML = `
+                <button class="chip-btn" onclick="q3()"><i class="fa-solid fa-hand-dots"></i> Ya, sangat keras & menempel</button>
+                <button class="chip-btn" onclick="showDiagnosis('R02')"><i class="fa-solid fa-water"></i> Tidak, terasa kenyal & bisa digeser</button>
+            `;
+        }
+
+        // Triage Q3
+        function q3() {
+            document.getElementById('zahraImg').src = "Zahra_Analisis.jpg";
+            document.getElementById('zahraChat').innerHTML = '"Satu pertanyaan terakhir: Apakah kulit di atas benjolan berkerut seperti kulit jeruk (*peau d\'orange*) atau putingnya tertarik ke dalam (retraksi)?"';
+            document.getElementById('chipBox').innerHTML = `
+                <button class="chip-btn" onclick="showDiagnosis('R03')"><i class="fa-solid fa-triangle-exclamation"></i> Ya, ada retraksi/peau d'orange</button>
+                <button class="chip-btn" onclick="showDiagnosis('R02')"><i class="fa-solid fa-xmark"></i> Tidak ada</button>
+            `;
+        }
+
+        // Triage Result
+        function showDiagnosis(risk) {
+            document.getElementById('chipBox').style.display = 'none';
+            const dash = document.getElementById('diagnostic-dashboard');
+            dash.style.display = 'block';
+            
+            let imtColor = userData.imt > 25 ? '#ff4757' : '#2ed573';
+            let imtPercent = Math.min((userData.imt / 40) * 100, 100);
+            
+            // Combine IMT and Lactation Education
+            let laktasiMsg = userData.menyusui ? "<br><br>Kabar baik: Riwayat menyusuimu memberikan efek protektif alami bagi payudara." : "";
+            let imtText = userData.imt > 25 
+                ? `<strong>Waspada Obesitas (IMT: ${userData.imt})!</strong> Jaringan adiposa berlebih memproduksi enzim aromatase yang meningkatkan kadar estrogen pemicu tumor.` + laktasiMsg
+                : `<strong>IMT Normal (${userData.imt}).</strong> Bagus! Jaga berat badan agar metabolisme estrogen seimbang.` + laktasiMsg;
+
+            // Radiologi EBM
+            let radText = userData.usia < 40 
+                ? "Jaringan payudaramu di usia <strong>" + userData.usia + " tahun</strong> ini masih sangat padat. Jika ingin skrining, gunakan <strong>USG Mammae</strong>, karena Mammografi akan memunculkan efek bayangan putih (*white-out*)."
+                : "Di usiamu (<strong>" + userData.usia + " tahun</strong>), <strong>Mammografi 3D</strong> adalah standar mutlak. Alat ini bisa melihat endapan mikrokalsifikasi bahkan bertahun-tahun sebelum benjolan terbentuk.";
+
+            let diagHTML = `
+                <div class="diag-card">
+                    <div class="diag-icon" style="background: rgba(11,19,43,0.05); color: var(--midnight-navy);"><i class="fa-solid fa-weight-scale"></i></div>
+                    <div style="flex:1;">
+                        <h4 style="font-size:1.2rem; margin-bottom:5px;">Edukasi Metabolik Personal</h4>
+                        <div style="width:100%; height:8px; background:#eee; border-radius:5px; margin:10px 0;"><div style="height:100%; width:${imtPercent}%; background:${imtColor}; border-radius:5px;"></div></div>
+                        <p style="font-size:0.95rem; color:#444;">${imtText}</p>
+                    </div>
+                </div>
+                <div class="diag-card">
+                    <div class="diag-icon" style="background: rgba(201, 92, 122, 0.1); color: var(--magenta-glow);"><i class="fa-solid fa-x-ray"></i></div>
+                    <div style="flex:1;">
+                        <h4 style="font-size:1.2rem; margin-bottom:5px;">Rekomendasi Radiologi (EBM)</h4>
+                        <p style="font-size:0.95rem; color:#444;">${radText}</p>
+                    </div>
+                </div>
+            `;
+
+            if(risk === 'R03') {
+                document.getElementById('zahraImg').src = "Zahra_Kaget.jpg";
+                document.getElementById('zahraChat').innerHTML = '"Berdasarkan keluhan *immobile* / *peau d\'orange*, ini adalah RED FLAG yang butuh perhatian medis segera!"';
+                diagHTML += `
+                <div class="diag-card alert-red">
+                    <div class="diag-icon" style="color:var(--danger); background:rgba(255,71,87,0.1);"><i class="fa-solid fa-triangle-exclamation fa-beat"></i></div>
+                    <div>
+                        <h4 style="color:var(--danger); font-size:1.3rem;">Peringatan Medis (Risiko Tinggi R03)</h4>
+                        <p style="font-weight:bold; font-size:0.95rem; margin-top:5px;">DISCLAIMER: Aplikasi ini bukan pengganti dokter. Jadwalkan pemeriksaan dengan Dokter Spesialis Bedah Onkologi segera!</p>
+                    </div>
+                </div>`;
+            } else if (risk === 'R02') {
+                document.getElementById('zahraImg').src = "Zahra_Senyum.jpg";
+                document.getElementById('zahraChat').innerHTML = '"Mengingat benjolan terasa kenyal dan mobile, kemungkinan besar ini adalah tumor jinak (seperti FAM)."';
+                diagHTML += `<div class="diag-card"><div class="diag-icon" style="color:var(--rose-gold); background:rgba(221,167,165,0.2);"><i class="fa-solid fa-file-medical"></i></div><div><h4 style="font-size:1.3rem;">Risiko Sedang (R02)</h4><p style="font-size:0.95rem;">Jangan panik. Tetap jadwalkan pemeriksaan USG untuk memastikan secara medis.</p></div></div>`;
+            } else {
+                document.getElementById('zahraImg').src = "Zahra_Senyum.jpg";
+                document.getElementById('zahraChat').innerHTML = '"Hasil observasimu aman. Lanjutkan rutinitas SADARI bulananmu."';
+                diagHTML += `<div class="diag-card"><div class="diag-icon" style="color:var(--safe); background:rgba(46,213,113,0.1);"><i class="fa-solid fa-shield-check"></i></div><div><h4 style="font-size:1.3rem;">Risiko Rendah</h4><p style="font-size:0.95rem;">Tidak ada anomali. Tetap waspada.</p></div></div>`;
+            }
+            
+            dash.innerHTML = diagHTML;
+
+            // Buka Game & Menu
+            setTimeout(() => {
+                document.getElementById('game-simulator').style.display = 'block';
+                document.getElementById('pathway-options').style.display = 'block';
+                document.getElementById('forum-section').style.display = 'block';
+                reveal();
+            }, 1000);
+        }
+
+        // 4. PATHOGENESIS GAME LOGIC (SMOOTH GPU TRANSFORM)
+        function gameStep(step) {
+            const avatar = document.getElementById('game-avatar');
+            const duct = document.getElementById('game-duct');
+            const cells = duct.getElementsByClassName('g-cell');
+            const brca = document.getElementById('g-brca');
+            const hypoxia = document.getElementById('g-hypoxia');
+            const tcell = document.getElementById('g-tcell');
+            const lymph = document.getElementById('g-lymph');
+            const dialog = document.getElementById('game-log');
+
+            for(let i=1; i<=5; i++) document.getElementById('btn-g'+i).disabled = true;
+
+            if(step === 1) {
+                avatar.style.width = "140px";
+                avatar.innerHTML = `<img src="Avatar_Obese.png" onerror="this.style.display='none'; this.parentElement.innerHTML='Obese';">`;
+                dialog.innerHTML = "<strong>Fase 1: Obesitas (Promotor).</strong> Jaringan lemak berlebih memicu enzim aromatase mengubah hormon menjadi estrogen pemicu tumor.";
+                document.getElementById('btn-g2').disabled = false;
+            } 
+            else if (step === 2) {
+                if(cells[2]) cells[2].classList.add('cancer');
+                brca.style.display = 'block';
+                dialog.innerHTML = "<strong>Fase 2: Mutasi Genetik.</strong> Kerusakan DNA terjadi. Gen BRCA (Perisai Kuning) muncul mencoba memperbaiki kerusakan agar tidak jadi ganas.";
+                document.getElementById('btn-g3').disabled = false;
+            }
+            else if (step === 3) {
+                brca.style.display = 'none';
+                for(let i=0; i<cells.length; i++) cells[i].classList.add('cancer');
+                hypoxia.style.display = 'block';
+                dialog.innerHTML = "<strong>Fase 3: Hipoksia Tumor.</strong> Kanker membelah masif. Bagian tengah tumor kekurangan oksigen (Hipoksia gelap), memicu pembentukan pembuluh darah baru (Angiogenesis).";
+                document.getElementById('btn-g4').disabled = false;
+            }
+            else if (step === 4) {
+                tcell.style.display = 'block';
+                setTimeout(() => {
+                    tcell.classList.add('hypnotized');
+                    tcell.style.transform = "translateX(-150px)";
+                    dialog.innerHTML = "<strong>Fase 4: Immune Evasion.</strong> Sel T (CD8+) datang menyerang! Namun kanker melepaskan sitokin TGF-β yang 'menghipnotis' Sel T agar malah melindungi tumor.";
+                }, 500);
+                document.getElementById('btn-g5').disabled = false;
+            }
+            else if (step === 5) {
+                lymph.style.display = 'block';
+                document.getElementById('g-basalis').style.background = "red";
+                duct.style.borderBottom = "4px dashed red";
+                
+                const invader = document.createElement('div');
+                invader.className = "g-cell cancer";
+                invader.style.display = "block";
+                invader.style.position = "absolute";
+                invader.style.bottom = "10px"; 
+                invader.style.left = "40%";
+                // Menggunakan Transform untuk kelancaran animasi GPU
+                invader.style.transform = "translate(0px, 0px)"; 
+                invader.style.transition = "transform 2s ease-in-out";
+                duct.appendChild(invader);
+                
+                setTimeout(() => {
+                    invader.style.transform = "translate(200px, 150px)";
+                    dialog.innerHTML = "<strong>Fase 5: Metastasis.</strong> Kanker menembus Membrana Basalis (merah), masuk ke pembuluh, dan menyebar ke Kelenjar Getah Bening (KGB) Axilla!";
+                }, 100);
+            }
+        }
+
+        // 5. PATHWAY NAVIGATION & IHK
+        function openCurative() { document.getElementById('curative-path').style.display='block'; document.getElementById('rehab-path').style.display='none'; window.scrollTo({top: document.getElementById('curative-path').offsetTop - 50, behavior: 'smooth'}); }
+        function openRehab() { document.getElementById('rehab-path').style.display='block'; document.getElementById('curative-path').style.display='none'; window.scrollTo({top: document.getElementById('rehab-path').offsetTop - 50, behavior: 'smooth'}); }
+
+        let isER = false; let isHER2 = false;
+        function toggleIHK(type) {
+            const cell = document.getElementById('ihk-cell');
+            if(type === 'er') {
+                isER = !isER; document.getElementById('btn-er').style.background = isER ? 'var(--magenta-glow)' : 'white'; document.getElementById('btn-er').style.color = isER ? 'white' : 'var(--magenta-glow)';
+                if(isER) {
+                    cell.innerHTML += `<div class="rec-er e-node" style="top:20px; left:20px; display:block;"></div><div class="rec-er e-node" style="bottom:20px; right:20px; display:block;"></div>`;
+                } else { document.querySelectorAll('.e-node').forEach(e => e.remove()); }
+            }
+            if(type === 'her2') {
+                isHER2 = !isHER2; document.getElementById('btn-her2').style.background = isHER2 ? 'var(--magenta-glow)' : 'white'; document.getElementById('btn-her2').style.color = isHER2 ? 'white' : 'var(--magenta-glow)';
+                if(isHER2) {
+                    cell.innerHTML += `<div class="rec-her2 h-node" style="top:-15px; left:50%; display:block;"></div><div class="rec-her2 h-node" style="bottom:-15px; left:50%; display:block;"></div>`;
+                } else { document.querySelectorAll('.h-node').forEach(e => e.remove()); }
+            }
+
+            const out = document.getElementById('ihk-output');
+            if(isER && isHER2) out.innerHTML = "<strong>Triple Positif:</strong> Responsif terhadap Terapi Hormonal (Tamoxifen) DAN Terapi Target (Trastuzumab).";
+            else if (isER && !isHER2) out.innerHTML = "<strong>Luminal (ER+, HER2-):</strong> Kanker memakan estrogen (Bulat Kuning). Blokir dengan <strong>Terapi Hormonal (Letrozole/Tamoxifen)</strong>.";
+            else if (!isER && isHER2) out.innerHTML = "<strong>HER2 Enriched:</strong> Sel memiliki antena agresif (Kotak Biru). Serang menggunakan <strong>Terapi Target (Herceptin)</strong>.";
+            else out.innerHTML = "<strong>Triple Negatif (TNBC):</strong> Sel tidak memiliki reseptor (kosong). Terapi berfokus pada <strong>Kemoterapi Sistemik</strong>.";
+        }
+
+        // 6. SMART FORUM CHAT
+        function sendMsg() {
+            const inp = document.getElementById('forumInput');
+            const msg = inp.value.trim();
+            if(!msg) return;
+
+            const feed = document.getElementById('forum-feed');
+            const post = document.createElement('div');
+            post.className = 'post';
+            post.style.animation = 'fadeUp 0.5s ease';
+            post.innerHTML = `
+                <div class="post-head">
+                    <div class="avatar-sm" style="background:var(--midnight-navy);">AB</div>
+                    <div><h4 style="font-family:'Inter';">@AnggotaBaru</h4><span style="font-size:0.8rem; color:#888;">Baru saja</span></div>
+                </div>
+                <p style="font-size: 1.05rem;">"${msg}"</p>
+                <div class="reply-thread"></div>
+            `;
+            feed.insertBefore(post, feed.firstChild);
+            inp.value = "";
+
+            if(msg.toLowerCase().includes("semangat")) {
+                setTimeout(() => {
+                    const thread = post.querySelector('.reply-thread');
+                    thread.innerHTML += `<div class="reply-bubble reply-ai" style="animation: fadeUp 0.5s ease;"><strong>✨ AI & Warga Forum:</strong> Terima kasih semangatnya! Ini sangat berarti buat kami yang sedang berjuang 💖</div>`;
+                }, 1000);
+            }
+        }
     </script>
 </body>
 </html>
