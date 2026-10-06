@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culex OS • Annisa's Workspace</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        /* =========================================
+           CULEX OS - PREMIUM ELEGANT BLUE EDITION
+           ========================================= */
+        :root {
+            --bg-base: #e0eafc;
+            --blue-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --accent-blue: #3a7bd5;
+            --light-blue: #89f7fe;
+            --glass-panel: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --text-dark: #101820;
+            --text-muted: #5b7083;
+            --bubble-ai: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
+        
+        body { 
+            background: linear-gradient(to bottom right, #e0eafc, #cfdef3); 
+            height: 100vh; 
+            display: flex; justify-content: center; align-items: center; 
+            overflow: hidden; 
+            position: relative;
+        }
+
+        /* Ambient Animated Background */
+        .ambient-bg { position: absolute; width: 100vw; height: 100vh; top: 0; left: 0; z-index: 0; overflow: hidden; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5; animation: floatOrb 25s infinite alternate ease-in-out; }
+        .orb-1 { width: 450px; height: 450px; background: #3a7bd5; top: -15%; left: -10%; }
+        .orb-2 { width: 550px; height: 550px; background: #89f7fe; bottom: -20%; right: -15%; animation-delay: -7s; }
+        .orb-3 { width: 350px; height: 350px; background: #1e3c72; top: 45%; left: 35%; animation-delay: -12s; opacity: 0.3; }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(120px, 180px) scale(1.15); }
+        }
+
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(234, 242, 253, 0.95); backdrop-filter: blur(25px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
+        }
+        .splash-logo {
+            font-size: 55px; font-weight: 800; color: transparent;
+            background: var(--blue-gradient); -webkit-background-clip: text;
+            animation: pulseGlow 2.5s infinite alternate; margin-bottom: 15px; letter-spacing: -1px;
+        }
+        .splash-text { font-size: 13px; color: var(--accent-blue); letter-spacing: 3px; text-transform: uppercase; font-weight: 600; }
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 15px rgba(58, 123, 213, 0.2)); transform: scale(0.98); }
+            100% { filter: drop-shadow(0 0 35px rgba(58, 123, 213, 0.5)); transform: scale(1.02); }
+        }
+
+        /* Main OS Container */
+        .app-container {
+            width: 100%; max-width: 950px; height: 92vh; 
+            background: var(--glass-panel); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); 
+            border: 1px solid var(--glass-border); border-radius: 30px; 
+            box-shadow: 0 35px 70px rgba(30, 60, 114, 0.1), inset 0 0 0 1px rgba(255,255,255,0.7); 
+            display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 10;
+            transform: translateY(25px); opacity: 0; animation: appEnter 1.2s 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes appEnter { to { transform: translateY(0); opacity: 1; } }
+
+        /* Window Header */
+        .header { 
+            padding: 22px 35px; background: rgba(255,255,255,0.4); border-bottom: 1px solid rgba(255,255,255,0.6); 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .header-profile { display: flex; align-items: center; gap: 18px; }
+        .avatar-culex { 
+            width: 50px; height: 50px; border-radius: 50%; 
+            background: var(--blue-gradient);
+            display: flex; justify-content: center; align-items: center; color: white; font-weight: 800; font-size: 24px; 
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
+        }
+        .header-info h1 { font-size: 19px; font-weight: 700; color: var(--text-dark); letter-spacing: -0.3px; }
+        .header-info p { font-size: 13.5px; color: var(--accent-blue); font-weight: 500; }
+        .btn-clear { 
+            background: rgba(255,255,255,0.6); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.9); 
+            padding: 10px 20px; border-radius: 24px; font-size: 12.5px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; 
+        }
+        .btn-clear:hover { background: var(--blue-gradient); color: white; border-color: transparent; box-shadow: 0 5px 20px rgba(58, 123, 213, 0.3); }
+
+        /* Chat Area */
+        .chat-area { flex: 1; padding: 35px; overflow-y: auto; display: flex; flex-direction: column; gap: 22px; scroll-behavior: smooth; }
+        .chat-area::-webkit-scrollbar { width: 8px; }
+        .chat-area::-webkit-scrollbar-thumb { background: rgba(30, 60, 114, 0.15); border-radius: 10px; }
+
+        .msg-row { display: flex; width: 100%; animation: slideUpBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; }
+        .msg-row.user { justify-content: flex-end; }
+        .msg-row.ai { justify-content: flex-start; }
+        
+        .bubble { max-width: 75%; padding: 16px 22px; font-size: 15.5px; line-height: 1.6; word-wrap: break-word; position: relative; }
+        .bubble-user { 
+            background: var(--blue-gradient); color: white; 
+            border-radius: 24px 24px 6px 24px; box-shadow: 0 12px 25px rgba(30, 60, 114, 0.25); font-weight: 500;
+        }
+        .bubble-ai { 
+            background: var(--bubble-ai); color: var(--text-dark); backdrop-filter: blur(12px);
+            border-radius: 24px 24px 24px 6px; box-shadow: 0 12px 35px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(255,255,255,0.9); 
+        }
+        .bubble b { font-weight: 700; color: var(--accent-blue); }
+        
+        /* Upload Card */
+        .upload-card { 
+            background: rgba(255,255,255,0.95); border-radius: 22px; padding: 26px; margin-top: 18px; 
+            box-shadow: 0 20px 40px rgba(30, 60, 114, 0.08), inset 0 0 0 1px rgba(255,255,255,1); width: 100%; min-width: 340px; 
+        }
+        .upload-card h3 { font-size: 16px; margin-bottom: 18px; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+        .upload-group { margin-bottom: 18px; background: #f0f4f8; padding: 14px; border-radius: 14px; border: 1px dashed #b9c6d2; }
+        .upload-group label { font-size: 12px; color: var(--accent-blue); font-weight: 700; display: block; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .upload-group input[type="file"] { font-size: 13px; width: 100%; color: var(--text-muted); }
+        .btn-process { 
+            background: var(--blue-gradient); color: white; border: none; width: 100%; padding: 15px; 
+            border-radius: 16px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s ease; 
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
+        }
+        .btn-process:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(30, 60, 114, 0.4); }
+
+        /* Typing Indicator */
+        .typing-indicator { display: flex; gap: 6px; padding: 14px 20px; background: rgba(255,255,255,0.8); border-radius: 22px; width: fit-content; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.04); }
+        .dot { width: 9px; height: 9px; background: var(--accent-blue); border-radius: 50%; animation: bounceDot 1.4s infinite ease-in-out both; }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        /* Input Area */
+        .input-area { 
+            padding: 22px 35px; background: rgba(255,255,255,0.5); border-top: 1px solid rgba(255,255,255,0.7); 
+            display: flex; gap: 18px; align-items: center; 
+        }
+        
+        .input-box { 
+            flex: 1; background: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,1); padding: 18px 26px; 
+            border-radius: 35px; font-size: 15.5px; outline: none; transition: all 0.3s; color: var(--text-dark);
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02), 0 8px 20px rgba(30, 60, 114, 0.04);
+        }
+        .input-box:focus { background: white; box-shadow: 0 0 0 4px rgba(58, 123, 213, 0.15), 0 8px 20px rgba(30, 60, 114, 0.08); }
+        .input-box::placeholder { color: #95a5a6; font-weight: 500; }
+        
+        .btn-send { 
+            background: var(--blue-gradient); width: 52px; height: 52px; border-radius: 50%; border: none; 
+            cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
+        }
+        .btn-send svg { width: 22px; height: 22px; fill: white; transform: translateX(2px); }
+        .btn-send:hover { transform: scale(1.08) rotate(-10deg); box-shadow: 0 15px 30px rgba(30, 60, 114, 0.45); }
+
+        /* Animations */
+        @keyframes slideUpBounce {
+            0% { opacity: 0; transform: translateY(35px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes bounceDot {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Boot Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-logo">Culex AI</div>
+        <div class="splash-text">Preparing Workspace...</div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-profile">
+                <div class="avatar-culex">C</div>
+                <div class="header-info">
+                    <h1>Culex</h1>
+                    <p id="status-text">Analisis presisi untuk Annisa ✨</p>
+                </div>
+            </div>
+            <button class="btn-clear" onclick="hapusSemuaData()">Clear Memory</button>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area" id="chat-box"></div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <input type="text" id="chat-input" class="input-box" placeholder="Ketik pesan atau panggil 'proker'..." autocomplete="off">
+            <button class="btn-send" onclick="kirimPesan()">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ===================================================================
+        // KUNCI API DAN NAMA MODEL SUDAH DIPERBAIKI
+        // ===================================================================
+        const API_KEY = "AQ.Ab8RN6KaZeesx5q17ohEC_fqdMo7MZOLcws0xpoh9qjLDmH0LA"; 
+        
+        let riwayatChat = [];
+        let dataMentah = ""; 
+
+        // BOOT SEQUENCE & INITIALIZATION
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash-screen').style.display = 'none';
+                }, 1000);
+            }, 2200); 
+
+            if (localStorage.getItem('dataCulex_v3') !== null) {
+                dataMentah = localStorage.getItem('dataCulex_v3');
+            }
+            muatRiwayatChat();
+        };
+
+        // LOGIC MAGIC TRIGGER
+        async function kirimPesan() {
+            const inputField = document.getElementById('chat-input');
+            const pesanUser = inputField.value;
+            if (!pesanUser) return;
+
+            tambahKeChat('user', pesanUser);
+            inputField.value = "";
+            
+            // MAGIC TRIGGER: Deteksi kata terkait proker / counsel sibling
+            const pesanLower = pesanUser.toLowerCase();
+            if ((pesanLower.includes("counsel sibling") || pesanLower.includes("proker")) && dataMentah === "") {
+                tambahKeChat('ai', `<b>Proker Mode: ON 🚀</b><br>Siap bantu kelola ratusan datanya, Nis. Silakan masukkan data <b>2025</b> dan <b>2026</b> di bawah ini. Culex akan pastikan pencocokannya akurat dan terstruktur.`, true);
+                return;
+            }
+
+            const typingID = "typing-" + Date.now();
+            munculkanTyping(typingID);
+
+            // SYSTEM PROMPT
+            const systemPrompt = `Nama kamu adalah Culex. Kamu adalah AI asisten eksklusif buatan Naufa yang dirancang khusus untuk Annisa.
+            Sikapmu: Profesional, cerdas, solutif, namun tetap bersahabat dan akrab. Panggil dia "Annisa" atau "Nis".
+            Konteks: Annisa sedang mengurus pencocokan data peserta angkatan 2025 dan 2026. Dia butuh hasil yang sangat presisi agar pesertanya cocok dan nyaman satu sama lain.
+            Tugasmu: Lakukan pencocokan profil berdasarkan logika yang kuat. Jadikan kesamaan daerah asal (sedaerah) sebagai pertimbangan yang sangat kuat. Selain itu, pertimbangkan juga kesamaan hobi dan kecocokan kepribadian (misal: yang ekstrovert bisa membimbing yang introvert). Saat memberikan rekomendasi, jelaskan alasan objektifnya dengan jelas (misal: "Peserta A dan B sangat cocok karena berasal dari daerah yang sama dan sama-sama aktif berorganisasi...").
+            Gunakan hanya istilah "2025" dan "2026". Dilarang menggunakan istilah "Kakak Asuh" atau "Adek Asuh".
+            Data memori tersimpan: \n${dataMentah}`;
+
+            try {
+                // MODEL DIPERBARUI KE gemini-flash-latest
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [
+                            { text: systemPrompt },
+                            { text: `Pesan Annisa: ${pesanUser}` }
+                        ] }]
+                    })
+                });
+
+                const hasil = await response.json();
+                hilangkanTyping(typingID);
+
+                if (hasil.error) {
+                    tambahKeChat('ai', "Maaf Nis, koneksi Culex ke server sedang bermasalah: " + hasil.error.message);
+                } else {
+                    let balasanAI = hasil.candidates[0].content.parts[0].text;
+                    balasanAI = balasanAI.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+                    tambahKeChat('ai', balasanAI);
+                }
+            } catch (error) {
+                hilangkanTyping(typingID);
+                tambahKeChat('ai', "Koneksi terputus Nis. Pastikan jaringan internet stabil, lalu kita coba lagi.");
+            }
+        }
+
+        // RENDER UI CHAT BUBBLES
+        function tambahKeChat(pengirim, teks, isUploadMenu = false) {
+            let konten = teks;
+            
+            if (isUploadMenu) {
+                konten += `
+                <div class="upload-card" id="card-upload-temp">
+                    <h3>📁 Sinkronisasi Data Proker</h3>
+                    <div class="upload-group">
+                        <label>Database 2025</label>
+                        <input type="file" id="file2025" accept=".csv, .xlsx, .xls">
+                    </div>
+                    <div class="upload-group">
+                        <label>Database 2026</label>
+                        <input type="file" id="file2026" accept=".csv, .xlsx, .xls">
+                    </div>
+                    <button class="btn-process" onclick="prosesDataExcel()">Eksekusi Analisis</button>
+                </div>`;
+            }
+
+            const msgObj = { role: pengirim, content: konten };
+            riwayatChat.push(msgObj);
+            
+            if (!isUploadMenu) {
+                localStorage.setItem('chatCulexOS_v3', JSON.stringify(riwayatChat));
+            }
+            renderSatuPesan(msgObj);
+        }
+
+        function renderSatuPesan(msg) {
+            const chatBox = document.getElementById('chat-box');
+            const row = document.createElement('div');
+            row.className = `msg-row ${msg.role === 'user' ? 'user' : 'ai'}`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = `bubble ${msg.role === 'user' ? 'bubble-user' : 'bubble-ai'}`;
+            bubble.innerHTML = msg.content;
+            
+            row.appendChild(bubble);
+            chatBox.appendChild(row);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // FUNGSI EKSEKUSI EXCEL
+        async function prosesDataExcel() {
+            const file1 = document.getElementById('file2025').files[0];
+            const file2 = document.getElementById('file2026').files[0];
+
+            if (!file1 || !file2) { alert("Nis, wajib masukkan kedua data 2025 dan 2026 untuk proses analisis."); return; }
+
+            const btn = document.querySelector('.btn-process');
+            btn.innerText = "Memproses kecocokan profil...";
+            btn.style.opacity = "0.8";
+
+            try {
+                const data1 = await bacaExcel(file1);
+                const data2 = await bacaExcel(file2);
+                dataMentah = `DATA 2025:\n${JSON.stringify(data1)}\n\nDATA 2026:\n${JSON.stringify(data2)}`;
+                localStorage.setItem('dataCulex_v3', dataMentah);
+                
+                const uploadCard = document.getElementById('card-upload-temp');
+                if(uploadCard) uploadCard.remove();
+                
+                tambahKeChat('ai', "<b>Sinkronisasi Selesai. 🚀</b><br>Ratusan profil dari 2025 dan 2026 sudah masuk memori. Culex siap melakukan pencocokan berdasarkan parameter terkuat seperti kesamaan daerah, minat, dan karakter. Mau mulai dari kriteria apa, Nis?");
+            } catch (error) {
+                alert("Maaf, file gagal dibaca. Pastikan formatnya Excel atau CSV.");
+                btn.innerText = "Eksekusi Analisis";
+                btn.style.opacity = "1";
+            }
+        }
+
+        function bacaExcel(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    resolve(XLSX.utils.sheet_to_json(firstSheet));
+                };
+                reader.onerror = reject;
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // EFEK TYPING & UTILITIES
+        function munculkanTyping(id) {
+            const chatBox = document.getElementById('chat-box');
+            const row = document.createElement('div');
+            row.className = `msg-row ai`;
+            row.id = id;
+            row.innerHTML = `<div class="typing-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+            chatBox.appendChild(row);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function hilangkanTyping(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function muatRiwayatChat() {
+            const chatTersimpan = localStorage.getItem('chatCulexOS_v3');
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = "";
+            
+            if (chatTersimpan) {
+                riwayatChat = JSON.parse(chatTersimpan);
+                riwayatChat.forEach(msg => renderSatuPesan(msg));
+            } else {
+                tambahKeChat('ai', "Halo Annisa, selamat datang di <b>Culex OS</b> ✨<br>Sistem siap menganalisis data atau membantumu mengurus tugas hari ini. Ketik instruksimu di bawah.");
+            }
+        }
+
+        function hapusSemuaData() {
+            if (confirm("Kamu yakin ingin membersihkan memori Culex dan memulai obrolan baru?")) {
+                localStorage.removeItem('dataCulex_v3');
+                localStorage.removeItem('chatCulexOS_v3');
+                location.reload(); 
+            }
+        }
+
+        document.getElementById("chat-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                kirimPesan();
+            }
+        });
+    </script>
+</body>
+</html>
